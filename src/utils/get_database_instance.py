@@ -11,10 +11,10 @@ def get_database_instance(db_type: str, generated_id: str, method: str):
     if database:
         match db_type:
             case 'postgresql':
-                return PostgresDatabase(database.host, database.name, database.username, database.password,
+                return PostgresDatabase(database.host, database.database, database.username, database.password,
                                         str(database.port), generated_id, method)
             case 'mysql':
-                return MySQLDatabase(database.host, database.name, database.username, database.password,
-                                        str(database.port), generated_id, method)
+                return MySQLDatabase(database.host, database.database, database.username, database.password,
+                                     str(database.port), generated_id, method)
     else:
         return None

@@ -1,5 +1,6 @@
 [[databases]]
-name = "devdb"
+name = "Test database 1"
+database = "devdb"
 type = "postgresql"
 username = "devuser"
 password = "changeme"
@@ -8,7 +9,8 @@ host = "localhost"
 generatedId = "16678159-ff7e-4c97-8c83-0adeff214681"
 
 [[databases]]
-name = "devdb"
+name = "Test database 2"
+database = "devdb"
 type = "postgresql"
 username = "devuser"
 password = "changeme"
@@ -17,7 +19,8 @@ host = "localhost"
 generatedId = "16678156-ff7e-4c97-8c83-0adeff214681"
 
 [[databases]]
-name = "mariadb"
+name = "Test database 3"
+database = "mariadb"
 type = "mysql"
 username = "mariadb"
 password = "changeme"

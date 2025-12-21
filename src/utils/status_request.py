@@ -2,6 +2,7 @@ import logging
 import requests
 from utils.edge_key import EdgeKey
 from utils.get_databases_config import DatabaseConfig
+from importlib.metadata import version
 
 logger = logging.getLogger('agent_logger')
 
@@ -22,6 +23,7 @@ def status_request(data: EdgeKey, databases):
         for database in databases:
             databases_items.append(formatted_database(database))
         body = {
+            "version": version('portabase-agent'),
             "databases": databases_items,
         }
         response = requests.post(url=url, json=body)

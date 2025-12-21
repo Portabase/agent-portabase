@@ -12,6 +12,7 @@ logger = logging.getLogger('agent_logger')
 
 class DatabaseConfig(BaseModel):
     name: str
+    database: str
     type: str
     username: str
     password: str
