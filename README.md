@@ -35,18 +35,6 @@
 
 ---
 
-## 📚 Table of Contents
-
-- [About The Project](#-about-the-project)
-- [Getting Started](#-getting-started)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Contact](#-contact)
-- [Acknowledgments](#-acknowledgments)
-
----
-
 ## ✨ About The Project
 
 Portabase Agent is the agent service use with Portabase Server. This service is for backup/restore db instances.
