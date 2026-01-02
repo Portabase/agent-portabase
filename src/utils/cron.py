@@ -16,7 +16,7 @@ def check_and_update_cron(data):
 
     task_name = f'periodic.backup_{generated_id}'
     format_task_name = f"redbeat:{task_name}"
-    task = "tasks.database.periodic_backup"
+    task = "tasks.backup.periodic_backup"
     schedule = get_schedules()
     logger.info(f'crontab schedule: {schedule}')
 
