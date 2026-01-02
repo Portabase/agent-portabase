@@ -34,7 +34,7 @@ def backup(payload):
         return {"message": False}
 
 
-@shared_task(name="tasks.backup.periodic")
+@shared_task()
 def periodic_backup(payload):
     logger.info("periodic backup task started")
 
