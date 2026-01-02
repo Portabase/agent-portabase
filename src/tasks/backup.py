@@ -8,7 +8,7 @@ from tasks.result import send_result_backup, send_result_restoration
 logger = logging.getLogger("agent_logger")
 
 
-@shared_task(name="tasks.backup.manual")
+@shared_task()
 def backup(payload):
     logger.info("Manual backup task started")
     try:
