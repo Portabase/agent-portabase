@@ -7,7 +7,7 @@ from core.context import AgentContext
 logger = logging.getLogger("agent_logger")
 
 
-@shared_task(name="tasks.restore")
+@shared_task()
 def restore(payload):
     logger.info("Restore task started")
 

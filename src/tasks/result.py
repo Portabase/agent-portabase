@@ -13,7 +13,7 @@ from core.context import AgentContext
 logger = logging.getLogger("agent_logger")
 
 
-@shared_task
+@shared_task()
 def send_result_backup(file_path: str, generated_id: str, status: str, method: str):
     ctx = AgentContext()
     logger.info("Sending backup result")
@@ -75,7 +75,7 @@ def send_result_backup(file_path: str, generated_id: str, status: str, method: s
         return {"result": False, "error": str(e)}
 
 
-@shared_task
+@shared_task()
 def send_result_restoration(generated_id: str, status: str):
     ctx = AgentContext()
     logger.info("Sending restoration result")
