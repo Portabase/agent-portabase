@@ -1,30 +1,13 @@
-import logging
 import subprocess
+import logging
 
-logger = logging.getLogger('agent_logger')
+logger = logging.getLogger("agent_logger")
 
 
 class Database:
-    def __init__(self, host: str, database: str, user: str, password: str, port: str, generated_id: str, method: str,
-                 type: str):
-        """
-        Initialize the Database instance.
-
-        :param host: Database host.
-        :param database: Database name.
-        :param user: Username.
-        :param password: Password.
-        :param port: Port number.
-        :param generated_id: generated_id.
-        """
-        self.connection_params = {
-            "host": host,
-            "database": database,
-            "user": user,
-            "password": password,
-            "port": port,
-            "type": type
-        }
+    def __init__(self, cfg, method):
+        self.cfg = cfg
+        self.method = method
 
     @staticmethod
     def execute(command, env=None, input_content: str = None):

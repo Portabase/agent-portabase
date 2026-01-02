@@ -1,28 +1,29 @@
 import os
+
+from domain.database import Database
 from settings import config
-from utils.database import Database
 
 
 class MySQLDatabase(Database):
-    def __init__(self, host: str, database: str, user: str, password: str, port: str, generated_id: str, method: str):
-        super().__init__(host, database, user, password, port, generated_id, method, type="mysql")
+    def __init__(self, cfg, method):
+        super().__init__(cfg, method)
 
-        self.host = host
-        self.database = database
-        self.user = user
-        self.password = password
-        self.port = port
+        self.host = cfg.host
+        self.database = cfg.database
+        self.user = cfg.username
+        self.password = cfg.password
+        self.port = cfg.port
 
-        self.backup_file = f"{config.DATA_PATH}/files/backups/{method}/{generated_id}.sql"
-        self.restore_file = f"{config.DATA_PATH}/files/restorations/{generated_id}.sql"
-        self.password = password
+        self.backup_file = f"{config.DATA_PATH}/files/backups/{method}/{cfg.generatedId}.sql"
+        self.restore_file = f"{config.DATA_PATH}/files/restorations/{cfg.generatedId}.sql"
+        self.password = cfg.password
 
         self.command_backup = [
             'mysqldump',
-            f'--host={host}',
-            f'--port={port}',
-            f'--user={user}',
-            f'--password={password}',
+            f'--host={cfg.host}',
+            f'--port={cfg.port}',
+            f'--user={cfg.username}',
+            f'--password={cfg.password}',
             '--routines',
             '--events',
             '--triggers',
@@ -30,27 +31,27 @@ class MySQLDatabase(Database):
             '--quick',
             '--add-drop-database',
             '--verbose',
-            '--databases', database,
+            '--databases', cfg.database,
             '-r', self.backup_file
         ]
 
         self.command_restore = [
             'mysql',
-            f'--host={host}',
-            f'--port={port}',
-            f'--user={user}',
-            f'--password={password}',
+            f'--host={cfg.host}',
+            f'--port={cfg.port}',
+            f'--user={cfg.username}',
+            f'--password={cfg.password}',
             # To confirm if interesting
             # '--verbose',
-            database
+            cfg.database
         ]
 
         self.command_ping = [
             'mysqladmin',
-            f'--host={host}',
-            f'--port={port}',
-            f'--user={user}',
-            f'--password={password}',
+            f'--host={cfg.host}',
+            f'--port={cfg.port}',
+            f'--user={cfg.username}',
+            f'--password={cfg.password}',
             'ping'
         ]
 
@@ -62,7 +63,6 @@ class MySQLDatabase(Database):
         env = os.environ.copy()
         env["MYSQL_PWD"] = self.password
 
-        # Drop and recreate the database before restoring
         drop_create_cmd = [
             'mysql',
             f'--host={self.host}',

@@ -1,25 +1,25 @@
 import os
 from settings import config
-from utils.database import Database
+from domain.database import Database
 
 
 class PostgresDatabase(Database):
-    def __init__(self, host: str, database: str, user: str, password: str, port: str, generated_id: str, method: str):
-        super().__init__(host, database, user, password, port, generated_id, method, type="postgresql")
+    def __init__(self, cfg, method):
+        super().__init__(cfg, method)
 
-        self.backup_file = f"{config.DATA_PATH}/files/backups/{method}/{generated_id}.dump"
-        self.restore_file = f"{config.DATA_PATH}/files/restorations/{generated_id}.dump"
+        self.backup_file = f"{config.DATA_PATH}/files/backups/{method}/{cfg.generatedId}.dump"
+        self.restore_file = f"{config.DATA_PATH}/files/restorations/{cfg.generatedId}.dump"
 
-        self.password = password
+        self.password = cfg.password
 
         self.terminate_connections_cmd = [
             'psql',
-            '-U', user,
+            '-U', cfg.username,
             '-d', 'postgres',
-            '-h', host,
-            '-p', port,
+            '-h', cfg.host,
+            '-p', cfg.port,
             '-c',
-            f"SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '{database}' AND pid <> pg_backend_pid();"
+            f"SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '{cfg.database}' AND pid <> pg_backend_pid();"
         ]
 
         self.command_restore = ['pg_restore',
@@ -28,12 +28,14 @@ class PostgresDatabase(Database):
                                 '--clean',
                                 '--if-exists',
                                 '--create',
-                                '--dbname=postgresql://{}:{}@{}:{}/{}'.format(user, password, host, port, "postgres"),
+                                '--dbname=postgresql://{}:{}@{}:{}/{}'.format(cfg.username, cfg.password, cfg.host,
+                                                                              cfg.port, "postgres"),
                                 '-v',
                                 self.restore_file]
 
         self.command_backup = ['pg_dump',
-                               '--dbname=postgresql://{}:{}@{}:{}/{}'.format(user, password, host, port, database),
+                               '--dbname=postgresql://{}:{}@{}:{}/{}'.format(cfg.username, cfg.password, cfg.host, cfg.port,
+                                                                             cfg.database),
                                '-Fc',
                                # '-Fd',
                                '-f', self.backup_file,
@@ -44,7 +46,7 @@ class PostgresDatabase(Database):
 
         self.command_ping = [
             'pg_isready',
-            '--dbname=postgresql://{}:{}@{}:{}/{}'.format(user, password, host, port, database)
+            '--dbname=postgresql://{}:{}@{}:{}/{}'.format(cfg.username, cfg.password, cfg.host, cfg.port, cfg.database)
         ]
 
     def backup(self):

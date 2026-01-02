@@ -6,7 +6,7 @@ from kombu import Exchange, Queue
 from logging_config import setup_logging
 from settings import config
 from celery.schedules import crontab
-from tasks.tasks import ping_server
+from tasks.ping import ping_server
 from utils.init import initialize_directories
 
 
@@ -24,12 +24,12 @@ def create_celery_app():
         Queue('periodic', default_exchange, routing_key='periodic.#'),
     )
 
-    # Configuring default queue, exchange, and routing key
     app.conf.task_default_queue = 'default'
     app.conf.task_default_exchange = 'default'
     app.conf.task_default_routing_key = 'default'
 
     app.autodiscover_tasks()
+
 
     ping_crontab = crontab(
         minute='*',

@@ -1,7 +1,8 @@
 import logging
 import requests
+
+from domain.factory import get_file_extension
 from settings import config
-from utils.plugin.common import get_file_extension
 
 logger = logging.getLogger('agent_logger')
 
