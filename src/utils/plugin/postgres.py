@@ -2,6 +2,7 @@ import os
 from settings import config
 from utils.database import Database
 
+
 class PostgresDatabase(Database):
     def __init__(self, host: str, database: str, user: str, password: str, port: str, generated_id: str, method: str):
         super().__init__(host, database, user, password, port, generated_id, method, type="postgresql")
@@ -34,8 +35,12 @@ class PostgresDatabase(Database):
         self.command_backup = ['pg_dump',
                                '--dbname=postgresql://{}:{}@{}:{}/{}'.format(user, password, host, port, database),
                                '-Fc',
+                               # '-Fd',
                                '-f', self.backup_file,
-                               '-v']
+                               '-v',
+                               # '--jobs=4'
+                               '--compress=3'
+                               ]
 
         self.command_ping = [
             'pg_isready',
