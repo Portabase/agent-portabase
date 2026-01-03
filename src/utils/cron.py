@@ -30,15 +30,20 @@ def check_and_update_cron(data):
     crontab_parts = cron_value.split() if cron_value else ["*", "*", "*", "*", "*"]
     crontab_schedule = get_crontab_object(crontab_parts)
 
+    payload = {
+        "generatedId": generated_id,
+        "dbms": dbms,
+    }
     if format_task_name in schedule:
         logger.info(f"Task '{format_task_name}' exists")
         actual_cron = get_crontab_as_array(schedule[format_task_name])
         if not compare_cron_arrays(actual_cron, crontab_parts):
             new_cron = get_crontab_object(crontab_parts)
-            update_periodic_task(task_name, task, new_cron, (generated_id, dbms,))
+
+            update_periodic_task(task_name, task, new_cron, (payload,))
 
     else:
-        add_task(task_name, task, crontab_schedule, (generated_id, dbms,))
+        add_task(task_name, task, crontab_schedule, (payload,))
         logger.info(f"Periodic task '{task_name}' created successfully")
 
 

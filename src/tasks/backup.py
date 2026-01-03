@@ -22,7 +22,7 @@ def backup(payload):
         executor.execute(payload, "manual")
 
         logger.info("Manual backup task completed successfully")
-        
+
 
     except Exception as exc:
         logger.exception(f"Manual backup task failed, error: {str(exc)}")
