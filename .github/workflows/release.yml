@@ -3,7 +3,7 @@ name: Publish Release
 on:
   push:
     tags:
-      - "v*"
+      - "*"
 
 jobs:
   release:
@@ -122,7 +122,7 @@ jobs:
             --arg author "$AUTHOR_NAME" \
             --arg icon "$AUTHOR_ICON" \
             '{
-              content: "||@release-cli|| New release published",
+              content: "||@release-agent|| New release published",
               embeds: [{
                 title: $title,
                 url: $url,
