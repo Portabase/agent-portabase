@@ -4,11 +4,11 @@ services:
   app:
     container_name: agent-portabase-prod
     restart: always
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
-      target: prod
-#    image: solucetechnologies/agent-portabase:1.0.4
+#    build:
+#      context: .
+#      dockerfile: docker/Dockerfile
+#      target: prod
+    image: solucetechnologies/agent-portabase:1.0.5-rc.1
     volumes:
       - ./databases.toml:/app/src/data/config/config.toml
     environment:
