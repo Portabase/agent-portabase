@@ -28,19 +28,48 @@ CURRENT_DATE=$(date +%Y-%m-%d)
 
 echo "Preparing release $VERSION..."
 
+
+# package.json
 if [ -f package.json ]; then
-  echo "Updating package.json to version $CLEAN_VERSION..."
-  sed -i "s/\"version\": \".*\"/\"version\": \"$CLEAN_VERSION\"/" package.json
+  echo "Updating package.json..."
+  if sed --version >/dev/null 2>&1; then
+    sed -i "s/\"version\": \".*\"/\"version\": \"$CLEAN_VERSION\"/" package.json
+  else
+    sed -i '' "s/\"version\": \".*\"/\"version\": \"$CLEAN_VERSION\"/" package.json
+  fi
 fi
 
+# pyproject.toml
 if [ -f pyproject.toml ]; then
-  echo "Updating pyproject.toml to version $CLEAN_VERSION..."
-  sed -i "s/^version = \".*\"/version = \"$CLEAN_VERSION\"/" pyproject.toml
+  echo "Updating pyproject.toml..."
+  if sed --version >/dev/null 2>&1; then
+    sed -i "s/^version = \".*\"/version = \"$CLEAN_VERSION\"/" pyproject.toml
+  else
+    sed -i '' "s/^version = \".*\"/version = \"$CLEAN_VERSION\"/" pyproject.toml
+  fi
 fi
 
-echo "Updating CITATION.cff..."
-sed -i "s/^version: .*/version: $CLEAN_VERSION/" CITATION.cff
-sed -i "s/^date-released: .*/date-released: \"$CURRENT_DATE\"/" CITATION.cff
+# Cargo.toml
+if [ -f Cargo.toml ]; then
+  echo "Updating Cargo.toml..."
+  if sed --version >/dev/null 2>&1; then
+    sed -i "s/^version = \".*\"/version = \"$CLEAN_VERSION\"/" Cargo.toml
+  else
+    sed -i '' "s/^version = \".*\"/version = \"$CLEAN_VERSION\"/" Cargo.toml
+  fi
+fi
+
+# CITATION.cff
+if [ -f CITATION.cff ]; then
+  echo "Updating CITATION.cff..."
+  if sed --version >/dev/null 2>&1; then
+    sed -i "s/^version: .*/version: $CLEAN_VERSION/" CITATION.cff
+    sed -i "s/^date-released: .*/date-released: \"$CURRENT_DATE\"/" CITATION.cff
+  else
+    sed -i '' "s/^version: .*/version: $CLEAN_VERSION/" CITATION.cff
+    sed -i '' "s/^date-released: .*/date-released: \"$CURRENT_DATE\"/" CITATION.cff
+  fi
+fi
 
 git add .
 
