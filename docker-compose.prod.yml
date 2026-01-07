@@ -4,7 +4,7 @@ services:
   app:
     container_name: agent-portabase-prod
     restart: always
-    image: solucetechnologies/agent-portabase:1.0.2-rc.1
+    image: solucetechnologies/agent-portabase:1.0.4-rc.1
     volumes:
       - ./databases.toml:/app/src/data/config/config.toml
     environment:
