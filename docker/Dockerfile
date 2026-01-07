@@ -17,12 +17,28 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 FROM python:3.13-slim-bookworm AS base
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    default-mysql-client \
-    postgresql-client \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    tzdata \
     redis-server \
-    procps \
+    ca-certificates \
+    build-essential \
+    binutils \
+    libproj-dev \
+    gdal-bin \
+    curl \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+    && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | tee /etc/apt/trusted.gpg.d/pgdg.asc \
+    && apt-get update
+
+RUN apt-get install -y postgresql-client libpq5 mariadb-client \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+
+
 
 WORKDIR /app
 
